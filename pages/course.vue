@@ -10,13 +10,13 @@
 
     <div class="flex flex-row justify-center flex-grow">
       <div
-        class="prose mr-4 p-8 bg-white rounded-md min-w-[20ch] max-w-[30ch] flex flex-col"
+          class="prose mr-4 p-8 bg-white rounded-md min-w-[20ch] max-w-[30ch] flex flex-col"
       >
         <h3 class="mb-4">Chapters</h3>
         <div
-          class="space-y-1 mb-4 flex flex-col"
-          v-for="chapter in chapters"
-          :key="chapter.slug"
+            class="space-y-1 mb-4 flex flex-col"
+            v-for="chapter in chapters"
+            :key="chapter.slug"
         >
           <h4 class="flex justify-between items-center">
             {{ chapter.title }}
@@ -28,11 +28,11 @@
           </h4>
 
           <NuxtLink
-            v-for="(lesson, index) in chapter.lessons"
-            :key="lesson.slug"
-            class="flex flex-row space-x-1 no-underline prose-sm font-normal py-1 px-4 -mx-4"
-            :to="lesson.path"
-            :class="{
+              v-for="(lesson, index) in chapter.lessons"
+              :key="lesson.slug"
+              class="flex flex-row space-x-1 no-underline prose-sm font-normal py-1 px-4 -mx-4"
+              :to="lesson.path"
+              :class="{
               'text-blue-500': lesson.path === $route.fullPath,
               'text-gray-600': lesson.path !== $route.fullPath,
             }"
@@ -51,9 +51,10 @@
       </div>
 
       <div class="prose p-12 bg-white rounded-md w-[65ch]">
-        <NuxtPage />
-        <!-- <NuxtErrorBoundary>
-          <NuxtPage />
+        <!-- isso é client error -->
+        <!-- componentizando o erro -->
+        <NuxtErrorBoundary>
+          <NuxtPage/>
           <template #error="{ error }">
             <p>
               Oh no, something went wrong with the lesson!
@@ -61,21 +62,35 @@
             </p>
             <p>
               <button
-                class="hover:cursor-pointer bg-gray-500 text-white font-bold py-1 px-3 rounded"
-                @click="resetError(error)"
+                  class="hover:cursor-pointer bg-gray-500 text-white font-bold py-1 px-3 rounded"
+                  @click="resetError(error)"
               >
                 Reset
               </button>
             </p>
           </template>
-        </NuxtErrorBoundary> -->
+        </NuxtErrorBoundary>
       </div>
     </div>
   </div>
 </template>
 
 <script setup>
-const { chapters } = useCourse();
+const {chapters} = useCourse();
+
+const resetError = async (error) => {
+  //funciona no clientside
+  // await navigateTo(
+  //   "/course/chapter/1-chapter-1/lesson/1-introduction-to-typescript-with-vue-js-3"
+  // );
+  // error.value = null;
+
+  // dá erro 500
+  throw createError({
+    fatal: true,
+    message: "Fatal error.",
+  });
+};
 </script>
 
 <style scoped>
